@@ -1,0 +1,6 @@
+[2022-04-25 19:37:13,201][        main.py][line: 102][    INFO] args:Namespace(GNN_model_path='./GCN/model_gin/supervised_contextpred.pth', MCMC_size=5, gammar=0.99, hidden_size=128, learning_rate=0.01, max_epoches=50, motif=False, num_generated_samples=100, receiver_file='output_syn.txt', resume=False, resume_path='', sender_file='generated_samples.txt', training_data='./datasets/millad.txt')
+[2022-04-25 19:37:15,058][        main.py][line: 115][    INFO] starting
+
+[2022-04-25 19:37:15,058][        main.py][line: 120][    INFO] <<<<< Epoch 0/50 >>>>>>
+[2022-04-25 20:24:05,981][        main.py][line: 131][    INFO] eval_metrics: {'diversity': 0.9108225002353333, 'syn': 0.1}
+[2022-04-25 20:24:05,982][        main.py][line: 137][    INFO] ======Sample 0 returns 1.1108225002353334=======:
