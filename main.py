@@ -18,9 +18,10 @@ import fcntl
 from retro_star_listener import lock
 
 
-def evaluate(grammar, args, metrics=['diversity', 'syn']):
+def evaluate(grammar, args, metrics=['sascore']):
     # Metric evalution for the given gramamr
     div = InternalDiversity()
+    sa_score = SaScore()
     eval_metrics = {}
     generated_samples = []
     generated_samples_canonical_sml = []
@@ -47,16 +48,24 @@ def evaluate(grammar, args, metrics=['diversity', 'syn']):
             break
 
     for _metric in metrics:
-        assert _metric in ['diversity', 'num_rules', 'num_samples', 'syn']
+        assert _metric in ['diversity', 'num_rules', 'num_samples', 'syn', 'sascore']
         if _metric == 'diversity':
             diversity = div.get_diversity(generated_samples)
             eval_metrics[_metric] = diversity
+
+        elif _metric == 'sascore':
+            ssc = sa_score.get_sascore(generated_samples)
+            eval_metrics[_metric] = ssc
+
         elif _metric == 'num_rules':
             eval_metrics[_metric] = grammar.num_prod_rule
+
         elif _metric == 'num_samples':
             eval_metrics[_metric] = idx
+
         elif _metric == 'syn':
             eval_metrics[_metric] = retro_sender(generated_samples, args)
+
         else:
             raise NotImplementedError
     return eval_metrics
@@ -127,10 +136,10 @@ def learn(smiles_list, args):
             l_grammar = deepcopy(grammar_init)
             iter_num, l_grammar, l_input_graphs_dict = MCMC_sampling(agent, l_input_graphs_dict, l_subgraph_set, l_grammar, num, args)
             # Grammar evaluation
-            eval_metric = evaluate(l_grammar, args, metrics=['diversity', 'syn'])
+            eval_metric = evaluate(l_grammar, args, metrics=['sascore'])
             logger.info("eval_metrics: {}".format(eval_metric))
             # Record metrics
-            R = eval_metric['diversity'] + 2 * eval_metric['syn']
+            R = eval_metric['sascore'] # + 2 * eval_metric['syn']
             R_ind = R.copy()
             returns.append(R)
             log_returns.append(eval_metric)

@@ -4,6 +4,13 @@ import numpy as np
 import torch.multiprocessing as mp
 from retro_star.api import RSPlanner
 
+from rdkit.Chem import RDConfig
+import os
+import sys
+sys.path.append(os.path.join(RDConfig.RDContribDir, 'SA_Score'))
+# now you can import sascore!
+import sascorer
+
 
 class InternalDiversity():
     def distance(self, mol1, mol2, dtype="Tanimoto"):
@@ -25,6 +32,16 @@ class InternalDiversity():
         diversity = 1 - similarity / n_pairs
         return diversity
 
+class SaScore():
+    def get_sascore(self, mol_list):
+
+        sa_scores = [sascorer.calculateScore(x) for x in mol_list]
+        
+        avg_score = 0.0
+        for i in sa_scores:
+            avg_score += 1. - (i-1.) / 9.
+
+        return avg_score / len(sa_scores)
 
 if __name__ == "__main__":
     pass
