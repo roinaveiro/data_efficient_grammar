@@ -43,6 +43,25 @@ class SaScore():
 
         return avg_score / len(sa_scores)
 
+class SimilarityTrain():
+
+    def similarity(self, ref_mol, mol_list, dtype="Tanimoto"):
+
+        ref_mol = AllChem.GetMorganFingerprintAsBitVect(ref_mol, 3, 2048) 
+        mol_list = [AllChem.GetMorganFingerprintAsBitVect(x, 3, 2048) for x in mol_list] 
+        
+        sims = DataStructs.BulkTanimotoSimilarity(ref_mol, mol_list)
+        
+        return np.mean(sims)
+
+    def get_similarity(self, mol_list, dtype="Tanimoto"):
+
+        ref_mol = '[C@@H]1OC(c2ccccc2)O[C@H]2COC(c3ccccc3)O[C@H]21'
+        ref_mol = Chem.MolFromSmiles(ref_mol)
+
+        similarity = self.similarity(ref_mol, mol_list)
+        return similarity
+
 if __name__ == "__main__":
     pass
 
