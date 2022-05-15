@@ -56,7 +56,7 @@ class SimilarityTrain():
 
     def get_similarity(self, mol_list, dtype="Tanimoto"):
 
-        ref_mol = '[C@@H]1OC(c2ccccc2)O[C@H]2COC(c3ccccc3)O[C@H]21'
+        ref_mol = 'OCC1C2C(OC(C3=CC=CC=C3)O1)COC(C4=CC=CC=C4)O2'
         ref_mol = Chem.MolFromSmiles(ref_mol)
 
         similarity = self.similarity(ref_mol, mol_list)
@@ -67,7 +67,8 @@ class HasSubstructure():
 
     def get_match(self, mol_list):
 
-        ref_mol = '[C@@H]1OC(c2ccccc2)O[C@H]2COC(c3ccccc3)O[C@H]21'
+        #ref_mol = '[C@@H]1OC(c2ccccc2)O[C@H]2COC(c3ccccc3)O[C@H]21'
+        ref_mol = 'OCC1C2C(OC(C3=CC=CC=C3)O1)COC(C4=CC=CC=C4)O2'
         ref_mol = Chem.MolFromSmiles(ref_mol)
 
         matchs = np.array( [x.HasSubstructMatch(ref_mol) for x in mol_list] )
